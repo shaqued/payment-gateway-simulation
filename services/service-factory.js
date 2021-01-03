@@ -1,5 +1,5 @@
-import mastercardService from "./mastercard.service";
-import visaService from "./visa.service";
+import {pay as mastercardService} from "./mastercard.service";
+import {pay as visaService} from "./visa.service";
 import creditCardCompanies from "../constants/credit-card-company.const";
 
 export default (creditCardCompany) => {

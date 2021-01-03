@@ -1,6 +1,8 @@
 import axios from "axios";
 
-export default async (req, res) => {
+const MAX_RETRY_ATTEMPTS = 3;
+
+export const pay = async (req, res, retryAttempts = 1) => {
   try {
     const config = {
       headers: { identifier: "shaqued", "Content-Type": "application/json" },
@@ -36,6 +38,10 @@ export default async (req, res) => {
         .json({ error: error.response.data.decline_reason });
     }
 
-    return res.sendStatus(error.response.status);
+    if(retryAttempts <= MAX_RETRY_ATTEMPTS){
+      setTimeout(() => pay(req, res, ++retryAttempts), Math.pow(retryAttempts, 2) * 1000);
+    } else{
+      return res.sendStatus(error.response.status);
+    }
   }
 };

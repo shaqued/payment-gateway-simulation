@@ -1,7 +1,10 @@
 const axios = require("axios");
 
-export default async (req, res, next) => {
+const MAX_RETRY_ATTEMPTS = 3;
+
+export const pay = async (req, res, retryAttempts = 1) => {
   try {
+    console.log("retry " + retryAttempts);
     const config = {
       headers: { identifier: "shaqued", "Content-Type": "application/json" },
     };
@@ -31,7 +34,13 @@ export default async (req, res, next) => {
     }
 
     return res.status(status).json();
-  } catch (err) {
-    return res.senStatus(err.response.status);
+  } catch (error) {
+
+    if(retryAttempts <= MAX_RETRY_ATTEMPTS){
+      setTimeout(() => pay(req, res, ++retryAttempts), Math.pow(retryAttempts, 2) * 1000);
+    } else{
+      console.log("shaq done ");
+      return res.sendStatus(error.response.status);
+    }
   }
 };
