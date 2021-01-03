@@ -1,3 +1,5 @@
 export default Object.freeze({
-    MARCHANT_IDENTIFIER: 'marchant-identifier'
+  MARCHANT_IDENTIFIER: "merchant-identifier",
+  MASTERCARD_IDENTIFIER: "identifier",
+  VISA_IDENTIFIER: "identifier",
 });
