@@ -1,5 +1,7 @@
 const express = require('express');
 const axios = require('axios');
+import {post} from '../controllers/payment-gateway.controller';
+import validate from '../validations/payment-gateway.validation'; 
 
 const router = express.Router();
 
@@ -18,5 +20,7 @@ router.get('/healthcheck', async (req, res, next) => {
     return res.json({ status: 'ERR', message: err.response.statusText})
   }
 });
+
+router.post('/api/charge', validate, post);
 
 module.exports = router;
