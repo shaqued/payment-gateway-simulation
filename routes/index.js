@@ -2,7 +2,7 @@ const express = require("express");
 const axios = require("axios");
 import { post } from "../controllers/payment-gateway.controller";
 import validate from "../validations/payment-gateway.validation";
-import {get} from "../controllers/charge-statuses.controller";
+import { get } from "../controllers/charge-statuses.controller";
 import validateChargeStatuses from "../validations/charge-statuses.validation";
 
 const router = express.Router();
