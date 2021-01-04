@@ -1,11 +1,12 @@
-const axios = require("axios");
-import {MAX_RETRY_ATTEMPTS} from "../constants/common.const";
+import axios from "axios";
 import visaChargeResults from "../constants/visa-charge-result.const";
+import retry from "./retry-handler";
+import paymentHeaders from "../constants/payment-headers.const";
 
-export const pay = async (req, res, retryAttempts = 1) => {
+export const pay = async (req, res, retryAttempts = 0) => {
   try {
     const config = {
-      headers: { identifier: "shaqued", "Content-Type": "application/json" },
+      headers: { [paymentHeaders.VISA_IDENTIFIER] : "shaqued", "Content-Type": "application/json" },
     };
 
     const {
@@ -35,10 +36,6 @@ export const pay = async (req, res, retryAttempts = 1) => {
     return res.status(status).json();
   } catch (error) {
 
-    if(retryAttempts <= MAX_RETRY_ATTEMPTS){
-      setTimeout(() => pay(req, res, ++retryAttempts), Math.pow(retryAttempts, 2) * 1000);
-    } else{
-      return res.sendStatus(error.response.status);
-    }
+    retry(pay, req, res, retryAttempts, error.response.status);
   }
 };
