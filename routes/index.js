@@ -2,6 +2,8 @@ const express = require("express");
 const axios = require("axios");
 import { post } from "../controllers/payment-gateway.controller";
 import validate from "../validations/payment-gateway.validation";
+import {get} from "../controllers/charge-statuses.controller";
+import validateChargeStatuses from "../validations/charge-statuses.validation";
 
 const router = express.Router();
 
@@ -25,5 +27,7 @@ router.get("/healthcheck", async (req, res, next) => {
 });
 
 router.post("/api/charge", validate, post);
+
+router.get("/api/chargeStatuses", validateChargeStatuses, get);
 
 module.exports = router;

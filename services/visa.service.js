@@ -1,7 +1,8 @@
 import axios from "axios";
 import visaChargeResults from "../constants/visa-charge-result.const";
 import retry from "./retry-handler";
-import paymentHeaders from "../constants/payment-headers.const";
+import paymentHeaders from "../constants/indentifier-headers.const";
+import {log} from "../log/declines-log";
 
 export const pay = async (req, res, retryAttempts = 0) => {
   try {
@@ -30,6 +31,7 @@ export const pay = async (req, res, retryAttempts = 0) => {
     );
 
     if (data.chargeResult === visaChargeResults.FAILURE) {
+      log.log(req.header(paymentHeaders.MARCHANT_IDENTIFIER), error.response.data.decline_reason );
       return res.status(status).json({ error: data.resultReason });
     }
 

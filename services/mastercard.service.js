@@ -1,6 +1,7 @@
 import axios from "axios";
 import retry from "./retry-handler";
-import paymentHeaders from "../constants/payment-headers.const";
+import paymentHeaders from "../constants/indentifier-headers.const";
+import {log} from "../log/declines-log";
 
 export const pay = async (req, res, retryAttempts = 0) => {
   try {
@@ -33,6 +34,7 @@ export const pay = async (req, res, retryAttempts = 0) => {
     return res.status(status).json();
   } catch (error) {
     if (error.response.data.decline_reason) {
+      log.log(req.header(paymentHeaders.MARCHANT_IDENTIFIER), error.response.data.decline_reason );
       return res
         .status(200)
         .json({ error: error.response.data.decline_reason });

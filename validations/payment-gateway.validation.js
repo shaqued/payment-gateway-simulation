@@ -1,5 +1,5 @@
 import creditCardCompanies from "../constants/credit-card-company.const";
-import paymentHeaders from "../constants/payment-headers.const";
+import paymentHeaders from "../constants/indentifier-headers.const";
 import JoiBase from "joi";
 import JoiDate from "@hapi/joi-date";
 
