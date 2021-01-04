@@ -1,6 +1,5 @@
 import axios from "axios";
-
-const MAX_RETRY_ATTEMPTS = 3;
+import {MAX_RETRY_ATTEMPTS} from "../constants/common.const";
 
 export const pay = async (req, res, retryAttempts = 1) => {
   try {

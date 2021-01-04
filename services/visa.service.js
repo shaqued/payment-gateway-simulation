@@ -1,10 +1,9 @@
 const axios = require("axios");
-
-const MAX_RETRY_ATTEMPTS = 3;
+import {MAX_RETRY_ATTEMPTS} from "../constants/common.const";
+import visaChargeResults from "../constants/visa-charge-result.const";
 
 export const pay = async (req, res, retryAttempts = 1) => {
   try {
-    console.log("retry " + retryAttempts);
     const config = {
       headers: { identifier: "shaqued", "Content-Type": "application/json" },
     };
@@ -29,7 +28,7 @@ export const pay = async (req, res, retryAttempts = 1) => {
       config
     );
 
-    if (data.chargeResult === "Failure") {
+    if (data.chargeResult === visaChargeResults.FAILURE) {
       return res.status(status).json({ error: data.resultReason });
     }
 
@@ -39,7 +38,6 @@ export const pay = async (req, res, retryAttempts = 1) => {
     if(retryAttempts <= MAX_RETRY_ATTEMPTS){
       setTimeout(() => pay(req, res, ++retryAttempts), Math.pow(retryAttempts, 2) * 1000);
     } else{
-      console.log("shaq done ");
       return res.sendStatus(error.response.status);
     }
   }
