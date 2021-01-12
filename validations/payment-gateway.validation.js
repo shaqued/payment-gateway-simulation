@@ -1,5 +1,4 @@
 import creditCardCompanies from "../constants/credit-card-company.const";
-import paymentHeaders from "../constants/indentifier-headers.const";
 import JoiBase from "joi";
 import JoiDate from "@hapi/joi-date";
 
@@ -19,7 +18,7 @@ const paymentSchema = Joi.object().keys({
 export default (req, res, next) => {
   const { error } = paymentSchema.validate(req.body);
 
-  if (!req.header(paymentHeaders.MARCHANT_IDENTIFIER) || error) {
+  if (error) {
     res.sendStatus(400);
   } else {
     next();
