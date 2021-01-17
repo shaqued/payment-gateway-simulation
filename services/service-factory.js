@@ -7,4 +7,4 @@ const dict = {
   [creditCardCompanies.VISA]: visaService,
 };
 
-export default (creditCardCompany) => dict[creditCardCompany];
+export default creditCardCompany => dict[creditCardCompany];

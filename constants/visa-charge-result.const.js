@@ -1,4 +1,4 @@
-export default Object.freeze({
-    FAILURE: "Failure",
-    SUCCESS: "Success",
-  });
+export default {
+  FAILURE: "Failure",
+  SUCCESS: "Success",
+};

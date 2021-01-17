@@ -1,9 +1,10 @@
 const express = require("express");
 const axios = require("axios");
 import { post } from "../controllers/payment-gateway.controller";
-import validate from "../validations/payment-gateway.validation";
 import { get } from "../controllers/charge-statuses.controller";
-import validateChargeStatuses from "../validations/charge-statuses.validation";
+import validate from "../validations/payment-gateway.validation";
+import validateHeader from "../validations/header.validation";
+import paymentHeaders from "../constants/indentifier-headers.const";
 
 const router = express.Router();
 
@@ -26,8 +27,13 @@ router.get("/healthcheck", async (req, res, next) => {
   }
 });
 
-router.post("/api/charge", validate, post);
+router.post("/api/charge",
+  (...arg) => validateHeader(...arg, paymentHeaders.MARCHANT_IDENTIFIER),
+  validate,
+  post);
 
-router.get("/api/chargeStatuses", validateChargeStatuses, get);
+router.get("/api/chargeStatuses",
+  (...arg) => validateHeader(...arg, paymentHeaders.CHARGE_STATUSES_IDENTIFIER),
+  get);
 
 module.exports = router;

@@ -1,25 +1,10 @@
-class DeclinesLog {
-  constructor() {
-    this.map = new Map();
+const dict = {};
+
+export const log = (identifier, reason) => {
+  if (!dict[identifier]) {
+    dict[identifier] = {};
   }
+  dict[identifier][reason] = ++dict[identifier][reason] || 1;
+};
 
-  log(marchantIdentifier, declineReson) {
-    if (this.map.has(marchantIdentifier)) {
-      this.map.get(marchantIdentifier)[declineReson] =
-        (this.map.get(marchantIdentifier)[declineReson] || 0) + 1;
-    } else {
-      this.map.set(marchantIdentifier, { [declineReson]: 1 });
-    }
-  }
-
-  get(marchantIdentifier) {
-    if (this.map.has(marchantIdentifier)) {
-      return this.map.get(marchantIdentifier);
-    }
-    return {};
-  }
-}
-
-const log = new DeclinesLog();
-
-export { log };
+export const get = identifier => dict[identifier] || {};
